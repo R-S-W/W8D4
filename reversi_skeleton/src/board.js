@@ -55,18 +55,31 @@ Board.prototype.isValidPos = function (pos) {
  * Returns the piece at a given [x, y] position,
  * throwing an Error if the position is invalid.
  */
-Board.prototype.getPiece = function (pos) {};
+Board.prototype.getPiece = function (pos) {
+  if (!this.isValidPos(pos)){
+    let strError = "Not valid pos!";
+    throw new Error( strError); 
+  }
+  let x = pos[0];
+  let y = pos[1];
+  return this.grid[x][y];
+};
 
 /**
  * Checks if the piece at a given position
  * matches a given color.
  */
-Board.prototype.isMine = function (pos, color) {};
+Board.prototype.isMine = function (pos, color) {
+  if (this.getPiece(pos)=== undefined){return false;}
+  return (this.getPiece(pos).color === color );
+};
 
 /**
  * Checks if a given position has a piece on it.
  */
-Board.prototype.isOccupied = function (pos) {};
+Board.prototype.isOccupied = function (pos) {
+  return this.getPiece(pos) !== undefined; 
+};
 
 /**
  * Recursively follows a direction away from a starting position, adding each
@@ -81,7 +94,9 @@ Board.prototype.isOccupied = function (pos) {};
  *
  * Returns empty array if no pieces of the opposite color are found.
  */
-Board.prototype._positionsToFlip = function (pos, color, dir, piecesToFlip) {};
+Board.prototype._positionsToFlip = function (pos, color, dir, piecesToFlip) {
+  if ()
+};
 
 /**
  * Checks that a position is not already occupied and that the color
