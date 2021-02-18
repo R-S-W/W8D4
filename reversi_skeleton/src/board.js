@@ -56,9 +56,9 @@ Board.prototype.isValidPos = function (pos) {
  * throwing an Error if the position is invalid.
  */
 Board.prototype.getPiece = function (pos) {
-  if (!this.isValidPos(pos)){
+  if (!this.isValidPos(pos)) {
     let strError = "Not valid pos!";
-    throw new Error( strError); 
+    throw new Error(strError);
   }
   let x = pos[0];
   let y = pos[1];
@@ -70,15 +70,17 @@ Board.prototype.getPiece = function (pos) {
  * matches a given color.
  */
 Board.prototype.isMine = function (pos, color) {
-  if (this.getPiece(pos)=== undefined){return false;}
-  return (this.getPiece(pos).color === color );
+  if (this.getPiece(pos) === undefined) {
+    return false;
+  }
+  return this.getPiece(pos).color === color;
 };
 
 /**
  * Checks if a given position has a piece on it.
  */
 Board.prototype.isOccupied = function (pos) {
-  return this.getPiece(pos) !== undefined; 
+  return this.getPiece(pos) !== undefined;
 };
 
 /**
@@ -95,7 +97,20 @@ Board.prototype.isOccupied = function (pos) {
  * Returns empty array if no pieces of the opposite color are found.
  */
 Board.prototype._positionsToFlip = function (pos, color, dir, piecesToFlip) {
-  if ()
+  if (!this.isValidPos(pos)) return [];
+  let x = pos[0];
+  let y = pos[1];
+  let dx = dir[0];
+  let dy = dir[1];
+
+  let newPos = [x + dx, y + dy];
+  if (!this.isOccupied(newPos)) return [];
+  if (this.getPiece(newPos).color === color) return [];
+
+  piecesToFlip = [newPos].concat(
+    this._positionsToFlip(newPos, color, dir, piecesToFlip)
+  );
+  return piecesToFlip;
 };
 
 /**
