@@ -105,12 +105,13 @@ Board.prototype._positionsToFlip = function (pos, color, dir, piecesToFlip) {
 
   let newPos = [x + dx, y + dy];
   if (!this.isOccupied(newPos)) return [];
-  if (this.getPiece(newPos).color === color) return [];
 
-  piecesToFlip = [newPos].concat(
-    this._positionsToFlip(newPos, color, dir, piecesToFlip)
-  );
-  return piecesToFlip;
+  if (!piecesToFlip) {
+    piecesToFlip = [];
+  }
+  if (this.getPiece(newPos).color === color) return piecesToFlip;
+  piecesToFlip.push(newPos);
+  return this._positionsToFlip(newPos, color, dir, piecesToFlip);
 };
 
 /**
@@ -118,7 +119,16 @@ Board.prototype._positionsToFlip = function (pos, color, dir, piecesToFlip) {
  * taking the position will result in some pieces of the opposite
  * color being flipped.
  */
-Board.prototype.validMove = function (pos, color) {};
+Board.prototype.validMove = function (pos, color) {
+  // debugger
+  let isUnoccupied = (this.getPiece(pos) === undefined) ;
+  let dirs = [[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0],[-1,1] ];
+
+  let isFlippable = dirs.some(dir => this._positionsToFlip(pos,color,dir).length >0);
+  // debugger
+  return isUnoccupied && isFlippable;
+
+};
 
 /**
  * Adds a new piece of the given color to the given position, flipping the
@@ -126,7 +136,24 @@ Board.prototype.validMove = function (pos, color) {};
  *
  * Throws an error if the position represents an invalid move.
  */
-Board.prototype.placePiece = function (pos, color) {};
+Board.prototype.placePiece = function (pos, color) {
+  if (!this.isValidPos(pos) || !this.validMove(pos, color)) {
+    throw new Error("Invalid move!");
+  }
+
+  let x  = pos[0];
+  let y = pos[1];
+  this.grid[x][y] = new Piece(color);
+  this._positionsToFlip(pos, color, )
+  let dirs = [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]];
+
+  let array = [];
+  array.concat(  dirs.forEach(dir => this._positionsToFlip(pos, color, dir) ) );
+
+  is
+
+
+};
 
 /**
  * Produces an array of all valid positions on
