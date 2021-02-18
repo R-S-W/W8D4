@@ -27,3 +27,18 @@
 .profile-nav ul:last-child {
   border-bottom: 1px solid rgb(223, 223, 223);
 }
+
+.profile-nav li:hover {
+    background-color:  rgb(240, 239, 239);
+}
+
+
+.online {
+    position: absolute;
+    margin: -165px 0 0 -40px ;
+    height: 35px;
+    width: 180px;
+    background-color: lime;
+    border-top: 1px solid rgb(28, 128, 28);
+    transform: rotate(-45deg);
+}
